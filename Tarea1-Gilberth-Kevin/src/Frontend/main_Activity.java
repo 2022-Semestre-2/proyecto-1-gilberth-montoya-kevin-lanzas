@@ -12,6 +12,7 @@ import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -27,7 +28,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class main_Activity extends javax.swing.JFrame {
     
-    
+     List<String> fileNames = new ArrayList<>();
     private CPUController CPU;
     /**
      * Creates new form main_Activity
@@ -38,8 +39,10 @@ public class main_Activity extends javax.swing.JFrame {
         textfieldMemorySize.setForeground(new Color(153,153,153));
         CPU = new CPUController(getPanelComponents());
         btnUploadFile.setEnabled(false);
-        btnExecute.setEnabled(false);
+        //btnExecute.setEnabled(false);
         btnClean.setEnabled(false);
+        //botonEjecutar.setEnabled(false);
+        botonEstadisticas.setEnabled(false);
        
     }
 
@@ -647,9 +650,9 @@ public class main_Activity extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel1)
                                     .addComponent(btnUploadFile))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnExecute)
-                                .addGap(18, 18, 18)
+                                .addGap(22, 22, 22)
                                 .addComponent(btnClean, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(36, 36, 36)
@@ -752,21 +755,10 @@ public class main_Activity extends javax.swing.JFrame {
          int selection = chooser.showOpenDialog(this);
          if(selection == JFileChooser.APPROVE_OPTION){
              File archivo = chooser.getSelectedFile();
-             String filename = archivo.getAbsolutePath();
-             try {
-                 if(CPU.loadInstructions(filename, jContentList,jCPUContentTable)){
-                     btnExecute.setEnabled(true);
-                     btnClean.setEnabled(true);
-                     CPU.executeInstruction();
-                 } else{
-                     JOptionPane.showMessageDialog(this, "The available memory is not enough to load the program", "Insufficient space", JOptionPane.ERROR_MESSAGE);
-                     btnClean.setEnabled(true);
-                 }
-                 
-             } catch (IOException ex) {
-                 Logger.getLogger(main_Activity.class.getName()).log(Level.SEVERE, null, ex);
-             }
+             fileNames.add(archivo.getAbsolutePath());
+             //String filename = archivo.getAbsolutePath();
          }
+         
     }//GEN-LAST:event_btnUploadFileActionPerformed
 
     private void textfieldMemorySizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfieldMemorySizeActionPerformed
@@ -804,7 +796,7 @@ public class main_Activity extends javax.swing.JFrame {
                 btnUploadFile.setEnabled(true);
                 JOptionPane.showMessageDialog(this, "The memory has been generated with a size of "+memorySizeString, "Valid value", JOptionPane.INFORMATION_MESSAGE);
             }else{
-                JOptionPane.showMessageDialog(this, "The entered value must be greater than 10", "Invalid value", JOptionPane.ERROR_MESSAGE);
+               
             }
         }else{JOptionPane.showMessageDialog(this, "The entered value cannot be empty", "Invalid value", JOptionPane.ERROR_MESSAGE);}
       
@@ -812,6 +804,24 @@ public class main_Activity extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEnterMemorySizeActionPerformed
 
     private void btnExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecuteActionPerformed
+        if(fileNames.size() == 0){
+             JOptionPane.showMessageDialog(this, "Please Upload a File", "Invalid value", JOptionPane.ERROR_MESSAGE);
+        }
+        try {
+                 if(CPU.loadInstructions(fileNames.get(0), jContentList,jCPUContentTable)){
+                     btnExecute.setEnabled(true);
+                     btnClean.setEnabled(true);
+                     botonEjecutar.setEnabled(true);
+                     botonEstadisticas.setEnabled(true);
+                     CPU.executeInstruction();
+                 } else{
+                     JOptionPane.showMessageDialog(this, "The available memory is not enough to load the program", "Insufficient space", JOptionPane.ERROR_MESSAGE);
+                     btnClean.setEnabled(true);
+                 }
+                 
+             } catch (IOException ex) {
+                 Logger.getLogger(main_Activity.class.getName()).log(Level.SEVERE, null, ex);
+             }
         CPU.executeInstruction();
     }//GEN-LAST:event_btnExecuteActionPerformed
 
