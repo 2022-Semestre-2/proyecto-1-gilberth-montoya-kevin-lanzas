@@ -76,7 +76,8 @@ public class CPUController {
         textFieldList.get(6).setText(String.valueOf(pRegistersValue[2]));
         
 
-        String data[] = {String.valueOf(pRegistersValue[0]), instructionList.get(currentInstructionPosition).getBinaryCode()};
+        String data[] = {String.valueOf(pRegistersValue[0]), instructionList.get(currentInstructionPosition).getBinaryInstructionOperator()};
+        System.out.println(instructionList.get(currentInstructionPosition).toString());
         DefaultTableModel tblModel = (DefaultTableModel) contentTable.getModel();
         tblModel.addRow(data);
         currentInstructionPosition++;
