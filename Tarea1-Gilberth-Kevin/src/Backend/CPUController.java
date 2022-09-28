@@ -20,12 +20,13 @@ import javax.swing.table.DefaultTableModel;
 public class CPUController {
     
     private FileContentHandler FileContent = new FileContentHandler();
-    private int currentInstructionPosition=0;
     
+    private int currentInstructionPosition=0;
     private ArrayList<Instruction> instructionList;
     private Memory memory;
     private ArrayList<JTextField> textFieldList;
     private JTable contentTable;
+    
     public CPUController(ArrayList<JTextField> pTextFieldList){
         setTextFieldList(pTextFieldList);
     }
@@ -75,9 +76,8 @@ public class CPUController {
         textFieldList.get(5).setText(String.valueOf(pRegistersValue[3]));
         textFieldList.get(6).setText(String.valueOf(pRegistersValue[2]));
         
-
+        
         String data[] = {String.valueOf(pRegistersValue[0]), instructionList.get(currentInstructionPosition).getBinaryInstructionOperator()};
-        System.out.println(instructionList.get(currentInstructionPosition).toString());
         DefaultTableModel tblModel = (DefaultTableModel) contentTable.getModel();
         tblModel.addRow(data);
         currentInstructionPosition++;
