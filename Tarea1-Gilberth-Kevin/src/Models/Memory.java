@@ -53,6 +53,16 @@ public class Memory {
          return getMemoryValues();
      }
      
+     public int[] executeSwap(Instruction pInstruction){
+         System.out.println("Jajaja" + pInstruction.getInstructionNumberValueR());
+         System.out.println("Yisus" + pInstruction.getInstructionRegister());
+         int number = memoryRegister.get(pInstruction.getInstructionNumberValueR());
+         int number2 = memoryRegister.get(pInstruction.getInstructionRegister());
+         memoryRegister.replace(pInstruction.getInstructionRegister(), number);
+         memoryRegister.replace(pInstruction.getInstructionNumberValueR(), number2 );
+         return getMemoryValues();
+     }
+     
      public int[] executeSub(Instruction pInstruction){
          int acRegisterValue = memoryRegister.get("AC");
          memoryRegister.replace("AC",   acRegisterValue-memoryRegister.get(pInstruction.getInstructionRegister()));

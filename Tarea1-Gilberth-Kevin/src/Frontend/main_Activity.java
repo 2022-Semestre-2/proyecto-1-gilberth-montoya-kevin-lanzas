@@ -28,7 +28,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class main_Activity extends javax.swing.JFrame {
     
-     List<String> fileNames = new ArrayList<>();
+    List<String> fileNames = new ArrayList<>();
     private CPUController CPU;
     private CPUController CPU2;
     /**
@@ -364,12 +364,17 @@ public class main_Activity extends javax.swing.JFrame {
         textPC.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textPC.setFocusable(false);
 
+        textIR.setEditable(false);
         textIR.setBackground(new java.awt.Color(255, 255, 255));
         textIR.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        textIR.setForeground(new java.awt.Color(255, 255, 255));
         textIR.setText("    ");
         textIR.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textIR.setFocusable(false);
+        textIR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textIRActionPerformed(evt);
+            }
+        });
 
         textAC.setEditable(false);
         textAC.setBackground(new java.awt.Color(255, 255, 255));
@@ -839,9 +844,12 @@ public class main_Activity extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEnterMemorySizeActionPerformed
 
     private void btnExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecuteActionPerformed
-
-        CPU.executeInstruction();
-        CPU2.executeInstruction();
+        if(fileNames.size() == 1){
+            CPU.executeInstruction();
+        }else{
+            CPU.executeInstruction();
+            CPU2.executeInstruction();
+        } 
     }//GEN-LAST:event_btnExecuteActionPerformed
 
     private void btnCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanActionPerformed
@@ -890,6 +898,10 @@ public class main_Activity extends javax.swing.JFrame {
                  Logger.getLogger(main_Activity.class.getName()).log(Level.SEVERE, null, ex);
              }
     }//GEN-LAST:event_botonCargarInstruccionesActionPerformed
+
+    private void textIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textIRActionPerformed
+
+    }//GEN-LAST:event_textIRActionPerformed
 
     private ArrayList<JTextField> getPanelComponents(){
         ArrayList<JTextField> list = new ArrayList<JTextField>();

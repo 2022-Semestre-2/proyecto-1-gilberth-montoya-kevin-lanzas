@@ -92,7 +92,7 @@ public class CPUController {
                         break;
                     }
                 case "SWAP":
-                    fillRegistersUI(memory.executeSub(instruction), instruction.getInstructionName());
+                    fillRegistersUI(memory.executeSwap(instruction), instruction.getInstructionName());
                     break;
             }
         }
@@ -107,6 +107,7 @@ public class CPUController {
         textFieldList.get(4).setText(String.valueOf(pRegistersValue[4]));
         textFieldList.get(5).setText(String.valueOf(pRegistersValue[3]));
         textFieldList.get(6).setText(String.valueOf(pRegistersValue[2]));
+        
         
         
         String data[] = {String.valueOf(pRegistersValue[0]), instructionList.get(currentInstructionPosition).getBinaryInstructionOperator()};
