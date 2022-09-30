@@ -47,6 +47,11 @@ public class Memory {
          
          return getMemoryValues();
      }
+     public int[] executeMov2(Instruction pInstruction){
+         int register = memoryRegister.get(pInstruction.getInstructionNumberValueR());
+         memoryRegister.replace(pInstruction.getInstructionRegister(), register);
+         return getMemoryValues();
+     }
      
      public int[] executeSub(Instruction pInstruction){
          int acRegisterValue = memoryRegister.get("AC");
@@ -60,6 +65,28 @@ public class Memory {
          return getMemoryValues();
      }
      
+     public int[] executeINC(Instruction pInstruction){
+         int acRegisterValue = memoryRegister.get("AC");
+         memoryRegister.replace("AC", acRegisterValue + 1);
+         return getMemoryValues();
+     }
+     
+     public int[] executeINC2(Instruction pInstruction){
+         memoryRegister.replace(pInstruction.getInstructionRegister(),1 + memoryRegister.get(pInstruction.getInstructionRegister()));
+         return getMemoryValues();
+     }
+     
+     public int [] executeDEC(Instruction pInstruction){
+         int acRegisterValue = memoryRegister.get("AC");
+         memoryRegister.replace("AC", acRegisterValue - 1);
+         return getMemoryValues();
+     }
+     
+     public int[] executeDEC2(Instruction pInstruction){
+         memoryRegister.replace(pInstruction.getInstructionRegister(),memoryRegister.get(pInstruction.getInstructionRegister())-1);
+         return getMemoryValues();
+     }
+     
      public int[] getMemoryValues(){
          int[] intArray = new int[] {this.getMemoryPosition(),memoryRegister.get("AC"),memoryRegister.get("AX"),memoryRegister.get("BX"),
          memoryRegister.get("CX"),memoryRegister.get("DX")};
@@ -68,6 +95,7 @@ public class Memory {
          this.availableInstruction--;
          return   intArray;
      }
+    
      
     
     public int getAvailableInstruction(){

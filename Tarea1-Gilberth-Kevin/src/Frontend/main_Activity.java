@@ -364,7 +364,6 @@ public class main_Activity extends javax.swing.JFrame {
         textPC.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textPC.setFocusable(false);
 
-        textIR.setEditable(false);
         textIR.setBackground(new java.awt.Color(255, 255, 255));
         textIR.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         textIR.setForeground(new java.awt.Color(255, 255, 255));

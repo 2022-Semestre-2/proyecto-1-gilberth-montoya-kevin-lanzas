@@ -46,6 +46,11 @@ public class CPUController {
         if(memory.getAvailableInstruction()>0 && currentInstructionPosition < instructionList.size() && memory.getMemoryPosition()<= memory.getMemorySize()+9){
             Instruction instruction = instructionList.get(currentInstructionPosition);
             
+            System.out.println(instruction.getInstructionName()); // Instruccion completa MOV AX, 5
+            System.out.println(instruction.getInstructionNumberValue()); // Numero de la instruccion 5
+            System.out.println(instruction.getInstructionOperator()); // La intruccion MOV
+            System.out.println(instruction.getInstructionRegister()); //Registro AX
+            
             switch(instruction.getInstructionOperator()){
                 case "LOAD":
                     fillRegistersUI(memory.executeLoad(instruction), instruction.getInstructionName());
@@ -54,13 +59,40 @@ public class CPUController {
                     fillRegistersUI(memory.executeStore(instruction), instruction.getInstructionName());
                     break;
                 case "MOV":
-                    fillRegistersUI(memory.executeMov(instruction), instruction.getInstructionName());
-                    break;
+                    String registerMov = instruction.getInstructionNumberValueR();
+                    if("AX".equals(registerMov) || "BX".equals(registerMov) || "CX".equals(registerMov) || "DX".equals(registerMov)){
+                        fillRegistersUI(memory.executeMov2(instruction), instruction.getInstructionName());
+                        break;
+                    }else{
+                        fillRegistersUI(memory.executeMov(instruction), instruction.getInstructionName());
+                        break;
+                    }
                 case "SUB":
                     fillRegistersUI(memory.executeSub(instruction), instruction.getInstructionName());
                     break;
                 case "ADD":
                     fillRegistersUI(memory.executeAdd(instruction), instruction.getInstructionName());
+                    break;
+                case "INC":
+                    String register = instruction.getInstructionRegister().toString();
+                    if(register == "0"){
+                        fillRegistersUI(memory.executeINC(instruction), instruction.getInstructionName());
+                        break;
+                    }else{
+                        fillRegistersUI(memory.executeINC2(instruction), instruction.getInstructionName());
+                        break;
+                    }
+                case "DEC":
+                    String registerDEC = instruction.getInstructionRegister().toString();
+                    if(registerDEC == "0"){
+                        fillRegistersUI(memory.executeDEC(instruction), instruction.getInstructionName());
+                        break;
+                    }else{
+                        fillRegistersUI(memory.executeDEC2(instruction), instruction.getInstructionName());
+                        break;
+                    }
+                case "SWAP":
+                    fillRegistersUI(memory.executeSub(instruction), instruction.getInstructionName());
                     break;
             }
         }
@@ -69,8 +101,8 @@ public class CPUController {
     
     public void fillRegistersUI(int[] pRegistersValue, String pInstructionBeingExecuted){
         textFieldList.get(0).setText(String.valueOf(pRegistersValue[0]));
-        textFieldList.get(1).setText(String.valueOf(pRegistersValue[1]));
-        textFieldList.get(2).setText(pInstructionBeingExecuted);
+        textFieldList.get(1).setText(pInstructionBeingExecuted);
+        textFieldList.get(2).setText(String.valueOf(pRegistersValue[1]));
         textFieldList.get(3).setText(String.valueOf(pRegistersValue[5]));
         textFieldList.get(4).setText(String.valueOf(pRegistersValue[4]));
         textFieldList.get(5).setText(String.valueOf(pRegistersValue[3]));

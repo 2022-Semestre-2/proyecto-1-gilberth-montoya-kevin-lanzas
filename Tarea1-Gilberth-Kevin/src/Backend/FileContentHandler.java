@@ -33,12 +33,45 @@ public class FileContentHandler {
             while((currentLine = objReader.readLine() ) !=null){
                 if(!currentLine.equals("")){
                     String [] instructionArray = currentLine.split(" ");
-                    String operationName = instructionArray[0];
-                    String operationRegister = instructionArray[1].substring(0, 2);
-                    int operationValue = (operationName.equals("MOV")) ?  Integer.parseInt(instructionArray[2]) : 0;
-                    Instruction test = new Instruction(currentLine,operationName,operationRegister,operationValue);
-                    instructionList.add(test);   
-                    listModel.addElement(currentLine);
+                    if(instructionArray.length == 1){
+                        String operationName = instructionArray[0];
+                        //String operationRegister = instructionArray[1].substring(0, 2);
+                        int operationValue = (operationName.equals("MOV")) ?  Integer.parseInt(instructionArray[2]) : 0;
+                        Instruction test = new Instruction(currentLine,operationName,"0",operationValue);
+                        instructionList.add(test);   
+                        listModel.addElement(currentLine);
+                    }else{
+                        if(instructionArray.length == 2){
+                            System.out.println("AAAAAA");
+                            String operationName = instructionArray[0];
+                            String operationRegister = instructionArray[1].substring(0, 2);
+                            int operationValue = (operationName.equals("MOV")) ?  Integer.parseInt(instructionArray[2]) : 0;
+                            Instruction test = new Instruction(currentLine,operationName,operationRegister,operationValue);
+                            instructionList.add(test);   
+                            listModel.addElement(currentLine);
+                        }else{
+                            String comparative = instructionArray[2];
+                            System.out.println(comparative);
+                            if("AX".equals(comparative) || "BX".equals(comparative) ||"CX".equals(comparative) || "DX".equals(comparative)){
+                                System.out.println("bbbbbbb");
+                                String operationName = instructionArray[0];
+                                String operationRegister = instructionArray[1].substring(0, 2);
+                                String operationValue = instructionArray[2];
+                                Instruction test = new Instruction(currentLine,operationName,operationRegister,operationValue);
+                                instructionList.add(test);   
+                                listModel.addElement(currentLine);
+                            }else{
+                                System.out.println("AAAAAA");
+                                String operationName = instructionArray[0];
+                                String operationRegister = instructionArray[1].substring(0, 2);
+                                int operationValue = (operationName.equals("MOV")) ?  Integer.parseInt(instructionArray[2]) : 0;
+                                Instruction test = new Instruction(currentLine,operationName,operationRegister,operationValue);
+                                instructionList.add(test);   
+                                listModel.addElement(currentLine);
+                            }
+                        }
+                    }
+                 
                     //System.out.println(test.getBinaryCode());
                 }
             }

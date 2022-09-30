@@ -42,15 +42,20 @@ public class Instruction {
     private String instructionOperator;
     private String instructionRegister;
     private int instructionNumberValue;
-
+    private String instructionNumberValueR; 
     
     public Instruction(String pInstructionName,String pInstructionOperator,String pInstructionRegister,int pInstructionNumberValue){
         setInstructionName(pInstructionName);
         setInstructionOperator (pInstructionOperator);
         setInstructionRegister(pInstructionRegister);
-        setInstructionNumberValue(pInstructionNumberValue);
-        
-       
+        setInstructionNumberValue(pInstructionNumberValue); 
+    }
+    
+    public Instruction(String pInstructionName,String pInstructionOperator,String pInstructionRegister,String instructionNumberValueR ){
+        setInstructionName(pInstructionName);
+        setInstructionOperator (pInstructionOperator);
+        setInstructionRegister(pInstructionRegister);
+        setInstructionNumberValueR(instructionNumberValueR); 
     }
     
     public String getInstructionName() {
@@ -67,6 +72,10 @@ public class Instruction {
 
     public int getInstructionNumberValue() {
         return instructionNumberValue;
+    }
+    
+    public String getInstructionNumberValueR() {
+        return instructionNumberValueR;
     }
     
     public String getBinaryInstructionOperator(){
@@ -115,6 +124,10 @@ public class Instruction {
 
     private void setInstructionNumberValue(int pInstructionNumberValue) {
         this.instructionNumberValue = pInstructionNumberValue;
+    }
+    
+    private void setInstructionNumberValueR(String pInstructionNumberValueR) {
+        this.instructionNumberValueR = pInstructionNumberValueR;
     }
     
     
