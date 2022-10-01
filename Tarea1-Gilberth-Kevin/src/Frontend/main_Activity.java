@@ -21,14 +21,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author jimon
  */
 public class main_Activity extends javax.swing.JFrame {
-    
+    int rowActual1 = 0;
+    int rowActual2 = 0;
     List<String> fileNames = new ArrayList<>();
+    int cont = 1;
     private CPUController CPU;
     private CPUController CPU2;
     /**
@@ -795,6 +798,11 @@ public class main_Activity extends javax.swing.JFrame {
              File archivo = chooser.getSelectedFile();
              fileNames.add(archivo.getAbsolutePath());
              botonCargarInstrucciones.setEnabled(true);
+             String data[] = {String.valueOf(cont) , "Nuevo"};
+             DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
+             tblModel.addRow(data);
+             cont ++;
+             
              //String filename = archivo.getAbsolutePath();
          }
          
@@ -844,12 +852,17 @@ public class main_Activity extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEnterMemorySizeActionPerformed
 
     private void btnExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecuteActionPerformed
-        if(fileNames.size() == 1){
-            CPU.executeInstruction();
-        }else{
-            CPU.executeInstruction();
-            CPU2.executeInstruction();
-        } 
+            //CPU.executeInstruction();
+            //CPU2.executeInstruction();    
+        if(CPU.executeInstruction() == 1){
+            DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
+            tblModel.setValueAt("Terminado", rowActual1, 1);
+        }
+        if(CPU2.executeInstruction()==1){
+            DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
+            tblModel.setValueAt("Terminado", rowActual2, 1);
+        }
+               
     }//GEN-LAST:event_btnExecuteActionPerformed
 
     private void btnCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanActionPerformed
@@ -879,8 +892,36 @@ public class main_Activity extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(this, "Please Upload a File", "Invalid value", JOptionPane.ERROR_MESSAGE);
         }
         try {
-                 if(CPU.loadInstructions(fileNames.get((int)(Math.random()*fileNames.size())), jContentList,jCPUContentTable)){
-                     if(CPU2.loadInstructions(fileNames.get((int)(Math.random()*fileNames.size())), jContentList,jCPUContentTable)){
+                 
+                 if(fileNames.size() == 1){
+                     int number = (int)(Math.random()*fileNames.size());
+                     if(CPU.loadInstructions(fileNames.get(number), jContentList,jCPUContentTable)){
+                        DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
+                        tblModel.setValueAt("Ejecucion", number, 1);
+                        rowActual1 = number;
+                        btnExecute.setEnabled(true);
+                        btnClean.setEnabled(true);
+                        botonEjecutar.setEnabled(true);
+                        botonEstadisticas.setEnabled(true);
+                        fileNames.remove(number);
+                    }
+                 }else{
+                     int number = (int)(Math.random()*fileNames.size());
+                     int number2 = (int)(Math.random()*fileNames.size());
+                     if(CPU.loadInstructions(fileNames.get(number), jContentList,jCPUContentTable)){
+                     DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
+                     tblModel.setValueAt("Ejecucion", number, 1);
+                     rowActual1 = number;
+                     
+                     if(number2 == number){
+                         while(number2 == number){
+                            number2=(int)(Math.random()*fileNames.size());
+                        }
+                     }
+                     if(CPU2.loadInstructions(fileNames.get(number2), jContentList,jCPUContentTable)){
+                        System.out.println(number2);
+                        tblModel.setValueAt("Ejecucion", number2, 1);
+                        rowActual2 = number2;
                         btnExecute.setEnabled(true);
                         btnClean.setEnabled(true);
                         botonEjecutar.setEnabled(true);
@@ -893,7 +934,11 @@ public class main_Activity extends javax.swing.JFrame {
                      JOptionPane.showMessageDialog(this, "The available memory is not enough to load the program", "Insufficient space", JOptionPane.ERROR_MESSAGE);
                      btnClean.setEnabled(true);
                  }
-                 
+                    fileNames.remove(number);
+                    fileNames.remove(number2);
+                }
+                     
+          
              } catch (IOException ex) {
                  Logger.getLogger(main_Activity.class.getName()).log(Level.SEVERE, null, ex);
              }

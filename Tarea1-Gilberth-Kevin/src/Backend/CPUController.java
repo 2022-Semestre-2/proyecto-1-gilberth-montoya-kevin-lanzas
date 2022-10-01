@@ -41,15 +41,11 @@ public class CPUController {
         }else{return false;}
     }
     
-    public void executeInstruction(){
+    public int executeInstruction(){
         
         if(memory.getAvailableInstruction()>0 && currentInstructionPosition < instructionList.size() && memory.getMemoryPosition()<= memory.getMemorySize()+9){
             Instruction instruction = instructionList.get(currentInstructionPosition);
-            
-            System.out.println(instruction.getInstructionName()); // Instruccion completa MOV AX, 5
-            System.out.println(instruction.getInstructionNumberValue()); // Numero de la instruccion 5
-            System.out.println(instruction.getInstructionOperator()); // La intruccion MOV
-            System.out.println(instruction.getInstructionRegister()); //Registro AX
+           
             
             switch(instruction.getInstructionOperator()){
                 case "LOAD":
@@ -95,8 +91,11 @@ public class CPUController {
                     fillRegistersUI(memory.executeSwap(instruction), instruction.getInstructionName());
                     break;
             }
+            
+        }else{
+            return 1;
         }
-       
+        return 0;
     }
     
     public void fillRegistersUI(int[] pRegistersValue, String pInstructionBeingExecuted){
