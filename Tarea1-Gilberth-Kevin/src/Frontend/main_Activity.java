@@ -32,6 +32,7 @@ public class main_Activity extends javax.swing.JFrame {
     int rowActual2 = 0;
     List<String> fileNames = new ArrayList<>();
     int cont = 1;
+    int memorySystem = 0;
     private CPUController CPU;
     private CPUController CPU2;
     /**
@@ -841,6 +842,7 @@ public class main_Activity extends javax.swing.JFrame {
             if(memorySizeNumber>9){
                 CPU.setMemorySize(memorySizeNumber);
                 CPU2.setMemorySize(memorySizeNumber);
+                memorySystem = memorySizeNumber;
                 btnUploadFile.setEnabled(true);
                 JOptionPane.showMessageDialog(this, "The memory has been generated with a size of "+memorySizeString, "Valid value", JOptionPane.INFORMATION_MESSAGE);
             }else{
@@ -852,11 +854,10 @@ public class main_Activity extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEnterMemorySizeActionPerformed
 
     private void btnExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecuteActionPerformed
-            //CPU.executeInstruction();
-            //CPU2.executeInstruction();    
         if(CPU.executeInstruction() == 1){
             DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
             tblModel.setValueAt("Terminado", rowActual1, 1);
+            
         }
         if(CPU2.executeInstruction()==1){
             DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
@@ -888,62 +889,114 @@ public class main_Activity extends javax.swing.JFrame {
     }//GEN-LAST:event_textDX2ActionPerformed
 
     private void botonCargarInstruccionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCargarInstruccionesActionPerformed
-        if(fileNames.size() == 0){
+        if(contador() == fileNames.size()){
              JOptionPane.showMessageDialog(this, "Please Upload a File", "Invalid value", JOptionPane.ERROR_MESSAGE);
         }
         try {
-                 
-                 if(fileNames.size() == 1){
+                 if(contador() == fileNames.size()-1){
+                     int pos = buscador();
+                     //int number = (int)(Math.random()*fileNames.size());
+                     CPU = new CPUController(getPanelComponents());
+                     CPU.setMemorySize(memorySystem);
+                     CPU.resetRegsters();
+                     if(CPU.loadInstructions(fileNames.get(pos), jContentList,jCPUContentTable)){
+                        DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
+                        tblModel.setValueAt("Ejecucion", pos, 1);
+                        rowActual1 = pos;
+                        
+                        btnExecute.setEnabled(true);
+                        btnClean.setEnabled(true);
+                        botonEjecutar.setEnabled(true);
+                        botonEstadisticas.setEnabled(true);
+                        fileNames.set(pos, "true");
+                    }
+                 }else{
+                     CPU = new CPUController(getPanelComponents());
+                     CPU2 = new CPUController(getPanelComponents2());
+                     CPU.setMemorySize(memorySystem);
+                     CPU2.setMemorySize(memorySystem);
+                     CPU.resetRegsters();
+                     CPU2.resetRegsters();
+                     
                      int number = (int)(Math.random()*fileNames.size());
+                     int number2 = (int)(Math.random()*fileNames.size());
+                     
+                     Boolean bandera = false;
+                     while(bandera == false){
+                        Boolean bandera2 = false;
+                        while(bandera2 == false){
+                            if("true".equals(fileNames.get(number))){
+                                number = (int)(Math.random()*fileNames.size());
+                            }else{
+                                bandera2=true;
+                                break;
+                            }
+                        }
+                        //System.out.println("AQUIIIII");
+                        Boolean bandera3 = false;
+                        while(bandera3 == false){
+                            if("true".equals(fileNames.get(number2))){
+                                number2 = (int)(Math.random()*fileNames.size());
+                            }else{
+                                if(number2 != number){
+                                    bandera3=true;
+                                    break;
+                                }
+                            }
+                        }
+                        bandera = true;
+                        break;
+                     }
+                     
                      if(CPU.loadInstructions(fileNames.get(number), jContentList,jCPUContentTable)){
+                        
                         DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
                         tblModel.setValueAt("Ejecucion", number, 1);
                         rowActual1 = number;
-                        btnExecute.setEnabled(true);
-                        btnClean.setEnabled(true);
-                        botonEjecutar.setEnabled(true);
-                        botonEstadisticas.setEnabled(true);
-                        fileNames.remove(number);
-                    }
-                 }else{
-                     int number = (int)(Math.random()*fileNames.size());
-                     int number2 = (int)(Math.random()*fileNames.size());
-                     if(CPU.loadInstructions(fileNames.get(number), jContentList,jCPUContentTable)){
-                     DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
-                     tblModel.setValueAt("Ejecucion", number, 1);
-                     rowActual1 = number;
-                     
-                     if(number2 == number){
-                         while(number2 == number){
-                            number2=(int)(Math.random()*fileNames.size());
+                        if(CPU2.loadInstructions(fileNames.get(number2), jContentList,jCPUContentTable)){
+                           tblModel.setValueAt("Ejecucion", number2, 1);
+                           rowActual2 = number2;
+                           btnExecute.setEnabled(true);
+                           btnClean.setEnabled(true);
+                           botonEjecutar.setEnabled(true);
+                           botonEstadisticas.setEnabled(true);
+                        }else{
+                           JOptionPane.showMessageDialog(this, "The available memory is not enough to load the program", "Insufficient space", JOptionPane.ERROR_MESSAGE);
+                           btnClean.setEnabled(true);
                         }
-                     }
-                     if(CPU2.loadInstructions(fileNames.get(number2), jContentList,jCPUContentTable)){
-                        System.out.println(number2);
-                        tblModel.setValueAt("Ejecucion", number2, 1);
-                        rowActual2 = number2;
-                        btnExecute.setEnabled(true);
-                        btnClean.setEnabled(true);
-                        botonEjecutar.setEnabled(true);
-                        botonEstadisticas.setEnabled(true);
-                     }else{
+                    }else{
                         JOptionPane.showMessageDialog(this, "The available memory is not enough to load the program", "Insufficient space", JOptionPane.ERROR_MESSAGE);
                         btnClean.setEnabled(true);
-                     }
-                 } else{
-                     JOptionPane.showMessageDialog(this, "The available memory is not enough to load the program", "Insufficient space", JOptionPane.ERROR_MESSAGE);
-                     btnClean.setEnabled(true);
-                 }
-                    fileNames.remove(number);
-                    fileNames.remove(number2);
+                    }
+                    fileNames.set(number, "true");
+                    fileNames.set(number2, "true");
+                    number = 0;
+                    number2 =0;
+                    
                 }
-                     
-          
              } catch (IOException ex) {
                  Logger.getLogger(main_Activity.class.getName()).log(Level.SEVERE, null, ex);
              }
     }//GEN-LAST:event_botonCargarInstruccionesActionPerformed
-
+    private int contador(){
+        int RES = 0;
+        for(int i = 0;i < fileNames.size();i++){
+            if("true".equals(fileNames.get(i))){
+                RES++;
+            }
+        }
+        return RES;
+    }
+    
+    private int buscador(){
+        int RES = 0;
+        for(int i = 0;i < fileNames.size();i++){
+            if(fileNames.get(i) != "true"){
+               RES = i;
+            }
+        }
+        return RES;
+    }
     private void textIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textIRActionPerformed
 
     }//GEN-LAST:event_textIRActionPerformed

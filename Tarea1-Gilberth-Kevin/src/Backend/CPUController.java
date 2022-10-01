@@ -115,6 +115,16 @@ public class CPUController {
         currentInstructionPosition++;
     }
     
+    public void resetRegsters(){
+        textFieldList.get(0).setText("0");
+        textFieldList.get(1).setText("0");
+        textFieldList.get(2).setText("0");
+        textFieldList.get(3).setText("0");
+        textFieldList.get(4).setText("0");
+        textFieldList.get(5).setText("0");
+        textFieldList.get(6).setText("0");
+    }
+    
     public void setMemorySize(int pMemorySize){
         memory = new Memory(pMemorySize);
     }
