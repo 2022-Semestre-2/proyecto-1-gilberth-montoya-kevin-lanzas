@@ -658,6 +658,11 @@ public class main_Activity extends javax.swing.JFrame {
 
         botonEjecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProgramImages/play.png"))); // NOI18N
         botonEjecutar.setText("Execute");
+        botonEjecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEjecutarActionPerformed(evt);
+            }
+        });
 
         botonEstadisticas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProgramImages/chart-icon (1).png"))); // NOI18N
         botonEstadisticas.setText(" Statistics");
@@ -991,7 +996,7 @@ public class main_Activity extends javax.swing.JFrame {
     private int buscador(){
         int RES = 0;
         for(int i = 0;i < fileNames.size();i++){
-            if(fileNames.get(i) != "true"){
+            if(!"true".equals(fileNames.get(i))){
                RES = i;
             }
         }
@@ -1000,6 +1005,30 @@ public class main_Activity extends javax.swing.JFrame {
     private void textIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textIRActionPerformed
 
     }//GEN-LAST:event_textIRActionPerformed
+
+    private void botonEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEjecutarActionPerformed
+        Boolean bandera = false;
+        Boolean bandera1 = false;
+        Boolean bandera2 = false;
+        while(bandera == false){
+            if(CPU.executeInstruction() == 1){
+                DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
+                tblModel.setValueAt("Terminado", rowActual1, 1);
+                bandera1 = true;
+            }
+            if(CPU2.executeInstruction()== 1){
+                DefaultTableModel tblModel = (DefaultTableModel) tablaProcesos.getModel();
+                tblModel.setValueAt("Terminado", rowActual2, 1);
+                bandera2 = true;
+            }
+            
+            if(bandera1 == true && bandera2 == true){
+                bandera = true;
+                break;
+            }
+        }
+        
+    }//GEN-LAST:event_botonEjecutarActionPerformed
 
     private ArrayList<JTextField> getPanelComponents(){
         ArrayList<JTextField> list = new ArrayList<JTextField>();
